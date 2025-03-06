@@ -51,32 +51,39 @@ You'll also find some tips and links to documentations that will help you comple
 ## 💭 Reflection and Self Assessment
 
 **I learned:** (repeat as needed)
-- .
+- I learned how to effectively clean and preprocess data by identifying missing, duplicate, and outlier data.
+- I also learned how to calculate central tendency measures (mean, median, trimmed mean) and how to visualize them using histograms.
+- Additionally, I gained hands-on experience with various data cleaning techniques like filtering and imputing missing values, as well as working with libraries like pandas and matplotlib for data analysis.
 
 **I struggled with:** (repeat as needed)
-- .
+- I initially struggled with how to handle missing data, especially choosing between imputation and dropping rows. It was tricky deciding which strategy would give the most accurate representation of the data without introducing biases.
+- I also had some challenges plotting the scatter plot on the map using Plotly, especially when it came to configuring the map and adjusting the zoom levels.
 
 **I need the instructor to help me with:** (repeat as needed)
-- .
+- I also need some help understanding the implications of dropping missing data versus filling it in, especially in terms of potential data distortion.
 
 **How long did it take you to complete this assignment? and reflect on that**
-[ ] hours.
+[ 5 ] hours.
 
 **How often did you have to check the solution to the problem? How do you feel about that?**
-
+- I checked the solution one time, especially when I had doubts about specific plotting functions and how to handle missing data, but I want to reduce my dependence on solutions in the future by practicing more.
 
 **If I were to do this assignment again, I would:** (repeat as needed)
-- .
+- I would spend more time upfront planning out the data cleaning steps before diving into the code. This would help avoid some of the confusion later on.
+- I would also try different techniques for visualizing the cleaned data to see if other approaches provide better insights
 
-**💯 Self Grade:** For this assignment, based on my work and my reflections I should get [ ] out of 20.
+**💯 Self Grade:** For this assignment, based on my work and my reflections I should get [ 20 ] out of 20.
 
 --------------------
 ## 📚 References and Citations
 **I used the following links, books, and other resources in my work:** (repeat as needed)
-- .
+- I used the following links, books, and other resources in my work:
+
+- pandas documentation: https://pandas.pydata.org/pandas-docs/stable/
+- Plotly express documentation: https://plotly.com/python/plotly-express/ 
   
 **I received help from the following people:** (repeat as needed)
-- . 
+- I received help from Instructor for clarifying some of the assignment instructions related to handling missing data.
 
 ---
 ## Copyrights and License
