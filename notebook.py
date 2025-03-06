@@ -221,35 +221,26 @@ plt.show()
 # 
 # (📜 Check out the examples on their docs)[https://plotly.com/python/scatter-plots-on-maps/]
 
-# In[36]:
+# In[16]:
 
 
 # 💻💯✨ Plot the data on a map of California
-import plotly.express as px
+
 import pandas as pd
+import plotly.express as px
 
-# Sample data (Replace this with your actual data containing 'latitude' and 'longitude' columns)
-data = {
-    "latitude": [34.0522, 36.7783, 37.7749, 34.0522, 36.1146],  # Example latitudes for cities in California
-    "longitude": [-118.2437, -119.4179, -122.4194, -118.2437, -118.7073],  # Example longitudes
-    "city": ["Los Angeles", "California", "San Francisco", "Los Angeles", "San Diego"],  # City names
-    "population": [4000000, 39500000, 880000, 4000000, 1500000]  # Example populations
-}
+# Load housing data from a CSV file
+housing_data = pd.read_csv('data/housing.csv')  
 
-# Create a DataFrame
-df = pd.DataFrame(data)
 
-# Set up the map with Plotly Express
-fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="city", 
-                        hover_data=["population"], color="population", size="population", 
-                        size_max=20, zoom=6, title="Scatter Plot on California Map")
-
-# Set the map style to 'carto-positron' or 'open-street-map'
-fig.update_layout(mapbox_style="carto-positron", mapbox_center={"lat": 37.5, "lon": -119.5}, mapbox_zoom=6)
+# Set up the map with Plotly Express using the housing data
+fig = px.scatter_mapbox(housing_data, lat="latitude", lon="longitude",  
+                         size="population", color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=5,
+                         mapbox_style="carto-positron",
+                         title="Scatter Plot on California Map")
 
 # Show the plot
 fig.show()
-
 
 
 # > 🚩 This is a good point to commit your code to your repository.
@@ -481,7 +472,7 @@ print(missing_data_after_dropping)
 
 # Make sure you run the following cell; this converts this Jupyter notebook to a Python script. and will make the process of reviewing your code on GitHub easier
 
-# In[35]:
+# In[37]:
 
 
 # 🦉: The following command converts this Jupyter notebook to a Python script.
