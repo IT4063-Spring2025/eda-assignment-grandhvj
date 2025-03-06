@@ -35,9 +35,11 @@ from scipy.stats import trim_mean
 get_ipython().run_line_magic('matplotlib', 'inline')
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import seaborn as sns
 from pandas.plotting import scatter_matrix
 
+# Install seaborn if not already installed
+get_ipython().run_line_magic('pip', 'install seaborn')
+import seaborn as sns
 
 # Configure pandas to display 500 rows; otherwise it will truncate the output
 pd.set_option('display.max_rows', 500)
@@ -58,6 +60,13 @@ plt.style.use("bmh")
 
 
 # 💻 Import the dataset in the project (data/housing.csv) into a dataframe called (housing)
+import pandas as pd
+
+# Load the dataset
+housing = pd.read_csv("data/housing.csv")
+
+# Display the first few rows
+housing.head()
 
 
 # ### Task 2: Confirm the data was loaded correctly
@@ -68,6 +77,7 @@ plt.style.use("bmh")
 
 
 # 💻 Get the first 6 records of the dataframe
+housing.head(6)
 
 
 # #### 2.2: Get the last 7 records of the dataset
@@ -76,6 +86,7 @@ plt.style.use("bmh")
 
 
 # 💻 Get the last 7 records of the dataframe
+housing.tail(7)
 
 
 # #### 2.3: Get a random sample of 10 records
@@ -84,6 +95,7 @@ plt.style.use("bmh")
 
 
 # 💻 Get a random 10 records of the dataframe
+housing.sample(10)
 
 
 # #### 2.4: Get information about the dataset, including the number of rows, number of columns, column names, and data types of each column
@@ -92,6 +104,7 @@ plt.style.use("bmh")
 
 
 # 💻 Show information about the different data columns (columns, data types, ...etc.)
+housing.info()
 
 
 # > 🚩 This is a good point to commit your code to your repository.
@@ -123,6 +136,7 @@ Ocean Proximity:    💻:
 
 
 # 💻 Show the descriptive statistics information about the columns in the data frame
+housing.describe()
 
 
 # #### 4.2: For the categorical columns, get the frequency counts for each category
@@ -137,6 +151,7 @@ Ocean Proximity:    💻:
 
 
 # 💻 Show the frequency of the values in the ocean_proximity column
+housing['ocean_proximity'].value_counts()
 
 
 # > 🚩 This is a good point to commit your code to your repository.
@@ -150,6 +165,10 @@ Ocean Proximity:    💻:
 
 
 # 💻 Plot a histogram of all the data features( with a bin size of 50)
+import matplotlib.pyplot as plt
+housing.hist(bins=50, figsize=(12, 8))
+plt.tight_layout()  # Adjust layout to prevent overlap
+plt.show()
 
 
 # #### 5.2: Visualize the distribution of only one column
@@ -159,6 +178,11 @@ Ocean Proximity:    💻:
 
 
 # 💻 plot a histogram of only the median_income
+housing['median_income'].hist(bins=50, figsize=(8, 5))
+plt.xlabel('Median Income')
+plt.ylabel('Count')
+plt.title('Distribution of Median Income')
+plt.show()
 
 
 # > 🚩 This is a good point to commit your code to your repository.
@@ -173,12 +197,22 @@ Ocean Proximity:    💻:
 
 
 # 💻 scatter plat without alpha
+housing.plot(kind='scatter', x='longitude', y='latitude', figsize=(10, 6))
+plt.xlabel('Longitude')
+plt.ylabel('Latitude')
+plt.title('House Locations')
+plt.show()
 
 
 # In[12]:
 
 
 # 💻 scatter plat with alpha
+housing.plot(kind='scatter', x='longitude', y='latitude', alpha=0.1, figsize=(10, 6))
+plt.xlabel('Longitude')
+plt.ylabel('Latitude')
+plt.title('House Locations (with Transparency)')
+plt.show()
 
 
 # > 🚩 This is a good point to commit your code to your repository.
@@ -187,10 +221,26 @@ Ocean Proximity:    💻:
 # 
 # (📜 Check out the examples on their docs)[https://plotly.com/python/scatter-plots-on-maps/]
 
-# In[13]:
+# In[16]:
 
 
 # 💻💯✨ Plot the data on a map of California
+
+import pandas as pd
+import plotly.express as px
+
+# Load housing data from a CSV file
+housing_data = pd.read_csv('data/housing.csv')  
+
+
+# Set up the map with Plotly Express using the housing data
+fig = px.scatter_mapbox(housing_data, lat="latitude", lon="longitude",  
+                         size="population", color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=5,
+                         mapbox_style="carto-positron",
+                         title="Scatter Plot on California Map")
+
+# Show the plot
+fig.show()
 
 
 # > 🚩 This is a good point to commit your code to your repository.
@@ -202,16 +252,21 @@ Ocean Proximity:    💻:
 # In[14]:
 
 
-# 💻 Get the correlation matrix of the housing data
+# 💻 Get the correlation matrix of the housing data, excluding the 'ocean_proximity' column
+corr_matrix = housing.drop('ocean_proximity', axis=1).corr()
+print(corr_matrix)
+
 
 
 # #### 6.2: Get the Correlation data fro the `median_house_age` column
 # sort the results in descending order
 
-# In[15]:
+# In[16]:
 
 
-# 💻 Get the correlation data for just the median_house_age
+# 💻 Get the correlation data for just the housing_median_age
+corr_house_age = corr_matrix['housing_median_age'].sort_values(ascending=False)
+print(corr_house_age)
 
 
 # #### 6.2: Visualize the correlation matrix using a heatmap
@@ -219,53 +274,77 @@ Ocean Proximity:    💻:
 # - show the numbers on the heatmap
 # 
 
-# In[16]:
+# In[17]:
 
 
 # 💻 Plot the correlation matrix as a heatmap
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10, 8))
+sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
+plt.title("Correlation Matrix Heatmap")
+plt.show()
 
 
 # #### 6.3: Visualize the correlations between some of the features using a scatter matrix
 # - Plot a scatter matrix for the `total_rooms`, `median_house_age`, `median_income`, and `median_house_value` columns
 
-# In[17]:
+# In[19]:
 
 
 # 💻 using Pandas Scatter Matrix Plotting, Plot the scatter matrix for (median_house_value, median_income, total_rooms, housing_median_age)
+from pandas.plotting import scatter_matrix
+
+scatter_features = ["median_house_value", "median_income", "total_rooms", "housing_median_age"]
+scatter_matrix(housing[scatter_features], figsize=(10, 8), alpha=0.2)
+plt.show()
 
 
 # #### 6.4: Visualize the correlations between 2 features using a scatter plot
 # - use an `alpha` value of 0.1
 
-# In[18]:
+# In[20]:
 
 
 # 💻 Plot the scatter plot for just (median_income and median_house_value)
+housing.plot(kind="scatter", x="median_income", y="median_house_value",
+             alpha=0.1, figsize=(8, 6))
+plt.xlabel("Median Income")
+plt.ylabel("Median House Value")
+plt.title("Correlation between Median Income and House Value")
+plt.show()
 
 
 # #### 6.5: ❓ What do you notice about the chart? what could that mean?
 # What could the lines of values at the top of the chart mean here?
-💻:
+
+# The chart likely represents a correlation matrix of the housing dataset, where the values indicate the strength and direction of the relationships between different features. The lines of values at the top of the chart are likely the names of the features being compared, helping to identify which variables are correlated with each other. High positive or negative values suggest strong relationships between features, such as a high correlation between sqft_living and price, which might indicate that larger houses tend to have higher prices. Weak correlations, close to 0, suggest no significant linear relationship between those features. The diagonal values are always 1, as each feature is perfectly correlated with itself.
+
 # > 🚩 This is a good point to commit your code to your repository.
 
 # ### Task 7: Data Cleaning - Duplicate Data
 
 # #### 7.1: Find duplicate data
 
-# In[19]:
+# In[23]:
 
 
 # 💻 Identify the duplicate data in the dataset
+duplicates = housing[housing.duplicated()]
+print(duplicates)
 
 
 # ### Task 8: Data Cleaning - Missing Data
 
 # #### 8.1: Find missing data
 
-# In[20]:
+# In[24]:
 
 
 # 💻 Identify the missing data in the dataset
+missing_data = housing.isna().sum()  # or housing.isnull().sum()
+print(missing_data)
 
 
 # #### 8.2: show a sample of 5 records of the rows with missing data
@@ -279,35 +358,53 @@ Ocean Proximity:    💻:
 #   * you'll need to use the `sample()` method to get a sample of 5 records of the results
 # </details>
 
-# In[21]:
+# In[25]:
 
 
 # 💻 use Pandas Filtering to show all the records with missing `total_bedrooms` field
+missing_total_bedrooms = housing[housing['total_bedrooms'].isna()]
+sample_missing = missing_total_bedrooms.sample(5)
+print(sample_missing)
 
 
 # #### 8.3: Calculate the central tendency values of the missing data feature
 # * Calculate the mean, median, trimmed mean
 
-# In[22]:
+# In[27]:
 
 
 # 💻 get the mean, median and trimmed mean of the total_bedrooms column
-total_bedrooms_median = 0
-total_berooms_mean = 0
-total_bedrooms_trimmed_mean = 0
+import numpy as np
+from scipy import stats
+
+# Calculate mean
+total_bedrooms_mean = housing['total_bedrooms'].mean()
+
+# Calculate median
+total_bedrooms_median = housing['total_bedrooms'].median()
+
+# Calculate trimmed mean (remove top and bottom 10% of data)
+total_bedrooms_trimmed_mean = stats.trim_mean(housing['total_bedrooms'].dropna(), proportiontocut=0.1)
 
 print(f"Median: {total_bedrooms_median}")
-print(f"Mean: {total_berooms_mean}")
+print(f"Mean: {total_bedrooms_mean}")
 print(f"Trimmed Mean: {total_bedrooms_trimmed_mean}")
 
 
 # #### 8.4: Visualize the distribution of the missing data feature
 # * Plot a histogram of the missing data feature (total_bedrooms)
 
-# In[23]:
+# In[28]:
 
 
 # 💻 Plot the histogram of the total_bedrooms column
+import matplotlib.pyplot as plt
+
+housing['total_bedrooms'].hist(bins=50, edgecolor='black')
+plt.title('Distribution of Total Bedrooms')
+plt.xlabel('Total Bedrooms')
+plt.ylabel('Frequency')
+plt.show()
 
 
 # #### 8.5: Choose one of the central tendency values and use it to fill in the missing data
@@ -317,40 +414,55 @@ print(f"Trimmed Mean: {total_bedrooms_trimmed_mean}")
 # 
 # [📜 You should find a good example here](https://www.sharpsightlabs.com/blog/pandas-fillna/#example-2)
 
-# In[24]:
+# In[29]:
 
 
 # 💻 Fill the missing values in the total_bedrooms column with an appropriate value, then show the first 5 records of the new dataframe
+housing_filled = housing.copy()  # Create a new dataframe
+housing_filled['total_bedrooms'].fillna(total_bedrooms_median, inplace=False)
+
+# Show the first 5 records of the new dataframe
+print(housing_filled.head())
 
 
 # ❓ Why did you choose this value?
-💻
+
+# We are filling with the median because it's less affected by outliers compared to the mean, making it a more robust choice for missing data imputation in a column like total_bedrooms.
+
 # #### 8.6: Confirm that there are no more missing values in the new dataframe
 # * make sure the dataframe contains all features, not just the `total_bedrooms` feature
 
-# In[25]:
+# In[30]:
 
 
 # 💻 Confirm the new dataframe has no missing values
+missing_data_after_imputation = housing_filled.isna().sum()
+print(missing_data_after_imputation)
 
 
 # #### 8.7: Dropping the missing data
 # assume we didn't want to impute the missing data, and instead, we wanted to drop the rows with missing data.
 # * don't use the `inplace` parameter, instead, create a new dataframe with the updated values.
 
-# In[26]:
+# In[31]:
 
 
 # 💻 drop the missing rows of the total_bedroom and save it to a new dataframe
+housing_dropped = housing.dropna(subset=['total_bedrooms'])
+
+# Show the first 5 records of the new dataframe
+print(housing_dropped.head())
 
 
 # #### 8.8: Confirm that there are no more missing values in the new dataframe
 # * make sure the dataframe contains all features, not just the `total_bedrooms` feature
 
-# In[27]:
+# In[34]:
 
 
 # 💻 Confirm the new dataframe has no missing values
+missing_data_after_dropping = housing_dropped.isna().sum()
+print(missing_data_after_dropping)
 
 
 # > 🚩 This is a good point to commit your code to your repository.
@@ -360,7 +472,7 @@ print(f"Trimmed Mean: {total_bedrooms_trimmed_mean}")
 
 # Make sure you run the following cell; this converts this Jupyter notebook to a Python script. and will make the process of reviewing your code on GitHub easier
 
-# In[28]:
+# In[37]:
 
 
 # 🦉: The following command converts this Jupyter notebook to a Python script.
